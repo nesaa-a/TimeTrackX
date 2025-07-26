@@ -1,0 +1,14 @@
+{
+  "scripts": {
+  "start": "react-scripts start",
+  "build": "react-scripts build",
+  "test": "react-scripts test"
+},
+  "dependencies": {
+  "react": "^18.x.x",
+  "react-dom": "^18.x.x",
+  "react-scripts": "^5.0.1",
+  "axios": "^x.x.x",
+  "react-router-dom": "^6.x.x"
+}
+}
