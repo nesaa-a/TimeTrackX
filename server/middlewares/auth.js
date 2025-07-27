@@ -1,25 +1,16 @@
 // server/middlewares/auth.js
 const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || "supersekret";
 
-/**
- * Middleware për verifikimin e JWT nga header Authorization
- * Për shembull: Authorization: Bearer <token>
- */
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'] || '';
-  // Marr token pas fjalës "Bearer"
-  const token = authHeader.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
-  }
-  jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid or expired token' });
-    }
-    // Vendos payload-in në req.user për t'u përdorur në rutat e mbrojtura
-    req.user = payload;
-    next();
-  });
-}
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.status(401).json({ message: "Missing token" });
 
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Invalid/Expired token" });
+        req.user = user; // Mundesh me përdor te controllers: req.user.userId, req.user.roleId etj.
+        next();
+    });
+}
 module.exports = { authenticateToken };
