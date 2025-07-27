@@ -1,21 +1,28 @@
 // server/routes/auth.js
 const express = require('express');
 const router = express.Router();
-const sql = require('mssql');
+const { sql, poolPromise } = require('../utils/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 // POST /login
 router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  console.log('Login payload:', req.body);
   try {
-    const result = await new sql.Request()
-      .input('username', sql.NVarChar, username)
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('username', sql.NVarChar, req.body.username)
       .query('SELECT * FROM Users WHERE Username = @username');
+    console.log('DB result:', result.recordset);
     const user = result.recordset[0];
-    if (!user) return res.status(401).send('Invalid credentials');
-    const match = await bcrypt.compare(password, user.PasswordHash);
-    if (!match) return res.status(401).send('Invalid credentials');
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    const match = await bcrypt.compare(req.body.password, user.PasswordHash);
+    console.log('Password match:', match);
+    if (!match) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
     const token = jwt.sign(
       { userId: user.UserId, roleId: user.RoleId },
       process.env.JWT_SECRET,
@@ -23,8 +30,8 @@ router.post('/login', async (req, res) => {
     );
     res.json({ token });
   } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
