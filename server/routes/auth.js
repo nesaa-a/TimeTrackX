@@ -41,42 +41,38 @@ router.post('/register', async (req, res) => {
 
 // LOGIN
 router.post('/login', async (req, res) => {
-    const { Username, Password } = req.body;
-    try {
-        const pool = await sql.connect(dbConfig);
-        const userResult = await pool.request()
-            .input('Username', sql.NVarChar, Username)
-            .query('SELECT * FROM Users WHERE Username=@Username');
-        const user = userResult.recordset[0];
+  console.log('🛎  POST /login payload:', req.body);
 
-        if (!user) return res.status(401).json({ message: "Invalid credentials" });
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool.request()
+        .input('username', sql.NVarChar, req.body.username)
+        .query('SELECT * FROM Users WHERE Username = @username');
+         console.log('🛎  DB returned:', result.recordset);
 
-        // Kontrollo password-in
-        const passwordMatch = await bcrypt.compare(Password, user.PasswordHash);
-        if (!passwordMatch) return res.status(401).json({ message: "Invalid credentials" });
-
-        // Krijo JWT token
-        const token = jwt.sign(
-            {
-                userId: user.UserId,
-                username: user.Username,
-                roleId: user.RoleId
-            },
-            JWT_SECRET,
-            { expiresIn: "1d" }
-        );
-
-        res.json({
-            token,
-            user: {
-                userId: user.UserId,
-                username: user.Username,
-                roleId: user.RoleId
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!result.recordset[0]) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
+
+    const user = result.recordset[0];
+    const match = await bcrypt.compare(req.body.password, user.PasswordHash);
+    console.log('🛎  bcrypt.compare:', match);
+
+    if (!match) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    const token = jwt.sign(
+      { userId: user.UserId, roleId: user.RoleId },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+    console.log('🛎  issuing token');
+    res.json({ token });
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 });
+
 
 module.exports = router;

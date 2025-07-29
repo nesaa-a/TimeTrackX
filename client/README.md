@@ -1,100 +1,70 @@
-# React Authentication Context and Route Guards
+# Getting Started with Create React App
 
-This project includes a complete authentication system with React Context and route protection components.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Components
+## Available Scripts
 
-### AuthContext (`src/contexts/AuthContext.jsx`)
+In the project directory, you can run:
 
-The `AuthContext` provides authentication state management:
+### `npm start`
 
-- **AuthContext**: React context for authentication state
-- **useAuth()**: Custom hook to access authentication context
-- **AuthProvider**: Provider component that manages authentication state
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-#### Features:
-- Reads initial JWT from localStorage ('token')
-- Fetches user data from `/users/me` endpoint on mount
-- Handles token expiration (401/403 errors)
-- Provides login/logout functions with navigation
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-#### Usage:
-```jsx
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+### `npm test`
 
-// Wrap your app
-<AuthProvider>
-  <App />
-</AuthProvider>
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-// Use in components
-const { user, token, login, logout } = useAuth();
-```
+### `npm run build`
 
-### ProtectedRoute (`src/components/ProtectedRoute.jsx`)
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-Route guard component for protecting routes based on authentication and roles:
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- **ProtectedRoute**: Main route guard component
-- **withAuth**: HOC for authentication protection
-- **withRole**: HOC for role-based protection
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-#### Features:
-- Authentication-based route protection
-- Role-based access control
-- Automatic redirects for unauthorized access
-- Support for both component and outlet rendering
+### `npm run eject`
 
-#### Usage:
-```jsx
-import { ProtectedRoute } from './components/ProtectedRoute';
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-// Basic authentication protection
-<Route path="/dashboard" element={
-  <ProtectedRoute>
-    <Dashboard />
-  </ProtectedRoute>
-} />
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-// Role-based protection
-<Route path="/admin" element={
-  <ProtectedRoute requiredRole="Admin">
-    <AdminPanel />
-  </ProtectedRoute>
-} />
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-// Using with React Router v6 Outlet
-<Route element={<ProtectedRoute requiredRole="Admin" />}>
-  <Route path="/admin" element={<AdminPanel />} />
-  <Route path="/admin/users" element={<UserManagement />} />
-</Route>
-```
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Environment Variables
+## Learn More
 
-Set the following environment variable in your `.env` file:
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-```
-REACT_APP_API_URL=http://localhost:3001
-```
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-## API Endpoints
+### Code Splitting
 
-The authentication system expects these API endpoints:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-- `POST /api/auth/login` - Login endpoint (returns token)
-- `GET /users/me` - Get current user info (requires Bearer token)
+### Analyzing the Bundle Size
 
-## Example Implementation
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-See `src/App.jsx` for a complete example of how to use these components together.
+### Making a Progressive Web App
 
-## Features
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-- ✅ JWT token management
-- ✅ Automatic user data fetching
-- ✅ Token expiration handling
-- ✅ Role-based access control
-- ✅ React Router v6 integration
-- ✅ TypeScript-ready (can be easily converted)
-- ✅ Error handling for failed requests 
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

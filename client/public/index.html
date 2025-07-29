@@ -7,149 +7,37 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="TimeTrackX - Time tracking and project management application"
+      content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    
-    <!-- Preconnect to external domains for better performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <title>TimeTrackX - Time Tracking & Project Management</title>
-    
-    <style>
-      /* Reset and base styles */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      
-      body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-          sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        background-color: #f5f5f5;
-        color: #333;
-        line-height: 1.6;
-      }
-      
-      /* Loading spinner for initial load */
-      #root:empty {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      }
-      
-      #root:empty::after {
-        content: '';
-        width: 40px;
-        height: 40px;
-        border: 4px solid #ffffff;
-        border-top: 4px solid transparent;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-      
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      /* Accessibility improvements */
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-      
-      /* Focus styles for better accessibility */
-      *:focus {
-        outline: 2px solid #667eea;
-        outline-offset: 2px;
-      }
-      
-      /* High contrast mode support */
-      @media (prefers-contrast: high) {
-        body {
-          background-color: #000;
-          color: #fff;
-        }
-      }
-      
-      /* Reduced motion support */
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
-    </style>
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
   </head>
   <body>
-    <noscript>
-      <div style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        text-align: center;
-        padding: 20px;
-        font-family: 'Inter', sans-serif;
-      ">
-        <div>
-          <h1 style="margin-bottom: 20px; font-size: 24px;">TimeTrackX</h1>
-          <p style="font-size: 16px; opacity: 0.9;">
-            You need to enable JavaScript to run this application.
-          </p>
-          <p style="font-size: 14px; opacity: 0.7; margin-top: 10px;">
-            Please enable JavaScript in your browser settings and refresh the page.
-          </p>
-        </div>
-      </div>
-    </noscript>
-    
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    
-    <!-- Service Worker Registration (optional) -->
-    <script>
-      // Register service worker for PWA capabilities
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/sw.js')
-            .then(function(registration) {
-              console.log('SW registered: ', registration);
-            })
-            .catch(function(registrationError) {
-              console.log('SW registration failed: ', registrationError);
-            });
-        });
-      }
-      
-      // Performance monitoring
-      window.addEventListener('load', function() {
-        if ('performance' in window) {
-          const perfData = performance.getEntriesByType('navigation')[0];
-          console.log('Page load time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
-        }
-      });
-    </script>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
   </body>
-</html> 
+</html>
