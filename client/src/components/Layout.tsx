@@ -8,7 +8,7 @@ const Layout: React.FC = () => {
     return (
         <Box sx={{ display: 'flex', minHeight: '100vh' }}>
             <Navbar />
-            <Sidebar np={undefined} />
+            <Sidebar />
             <Box
                 component="main"
                 sx={{
