@@ -9,7 +9,7 @@ import {
   ListItem,
   ListItemText,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import { TimeEntry, Project, ProjectTask } from '../types';
 import { getUserTimeEntries, getUserProjects, getUserTasks } from '../services/api';
 
@@ -55,25 +55,25 @@ const Dashboard: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Dashboard
       </Typography>
-      <Grid2 container spacing={3}>
+      <Grid container spacing={3}>
         {/* Summary Cards */}
-        <Grid2 xs={12} sm={12} md={4}>
+        <Grid item xs={12} sm={12} md={4}>
           <Paper elevation={2} sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom>
               Today's Work
             </Typography>
             <Typography variant="h3">{totalHoursToday.toFixed(1)}h</Typography>
           </Paper>
-        </Grid2>
-        <Grid2 xs={12} sm={12} md={4}>
+        </Grid>
+        <Grid item xs={12} sm={12} md={4}>
           <Paper elevation={2} sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom>
               Active Projects
             </Typography>
             <Typography variant="h3">{projects.length}</Typography>
           </Paper>
-        </Grid2>
-        <Grid2 xs={12} sm={12} md={4}>
+        </Grid>
+        <Grid item xs={12} sm={12} md={4}>
           <Paper elevation={2} sx={{ p: 2 }}>
             <Typography variant="h6" gutterBottom>
               Pending Tasks
@@ -82,10 +82,10 @@ const Dashboard: React.FC = () => {
               {tasks.filter((task) => task.status !== 'Completed').length}
             </Typography>
           </Paper>
-        </Grid2>
+        </Grid>
 
         {/* Recent Time Entries */}
-        <Grid2 xs={12} sm={12} md={6}>
+        <Grid item xs={12} sm={12} md={6}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -107,10 +107,10 @@ const Dashboard: React.FC = () => {
               </List>
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid>
 
         {/* Active Tasks */}
-        <Grid2 xs={12} sm={12} md={6}>
+        <Grid item xs={12} sm={12} md={6}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -131,8 +131,8 @@ const Dashboard: React.FC = () => {
               </List>
             </CardContent>
           </Card>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

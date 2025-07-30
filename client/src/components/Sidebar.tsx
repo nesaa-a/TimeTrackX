@@ -22,7 +22,7 @@ import {
 import { useAuth } from '../contexts/AuthContext';
 
 interface SidebarProps {
-    open?: boolean;np
+    open?: boolean;
     onClose?: () => void;
 }
 

@@ -1,49 +1,40 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { AuthResponse } from '../services/api';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface AuthContextType {
-    isAuthenticated: boolean;
-    user: AuthResponse | null;
-    setUser: (user: AuthResponse | null) => void;
-    logout: () => void;
+interface LoadingContextType {
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
+  loadingText: string;
+  setLoadingText: (text: string) => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (context === undefined) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
+export const useLoading = () => {
+  const context = useContext(LoadingContext);
+  if (!context) {
+    throw new Error('useLoading must be used within a LoadingProvider');
+  }
+  return context;
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<AuthResponse | null>(() => {
-        const storedUser = localStorage.getItem('user');
-        return storedUser ? JSON.parse(storedUser) : null;
-    });
+interface LoadingProviderProps {
+  children: ReactNode;
+}
 
-    const isAuthenticated = !!user;
+export const LoadingProvider: React.FC<LoadingProviderProps> = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState('Loading...');
 
-    useEffect(() => {
-        if (user) {
-            localStorage.setItem('user', JSON.stringify(user));
-        } else {
-            localStorage.removeItem('user');
-            localStorage.removeItem('token');
-        }
-    }, [user]);
+  const value = {
+    isLoading,
+    setIsLoading,
+    loadingText,
+    setLoadingText,
+  };
 
-    const logout = () => {
-        setUser(null);
-    };
-
-    return (
-        <AuthContext.Provider value={{ isAuthenticated, user, setUser, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
-
-export default AuthProvider; 
+  return (
+    <LoadingContext.Provider value={value}>
+      {children}
+    </LoadingContext.Provider>
+  );
+}; 

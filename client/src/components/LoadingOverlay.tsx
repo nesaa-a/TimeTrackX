@@ -1,6 +1,6 @@
 import React from 'react';
 import { Backdrop, CircularProgress, Typography, Box } from '@mui/material';
-import useLoading from '../contexts/LoadingContext';
+import { useLoading } from '../contexts/LoadingContext';
 
 const LoadingOverlay: React.FC = () => {
   const { isLoading, loadingText } = useLoading();

@@ -7,3 +7,13 @@ test('renders learn react link', () => {
   const linkElement = screen.getByText(/learn react/i);
   expect(linkElement).toBeInTheDocument();
 });
+function expect(linkElement: HTMLElement) {
+  return {
+    toBeInTheDocument: () => {
+      if (!document.body.contains(linkElement)) {
+        throw new Error('Expected element to be in the document');
+      }
+    }
+  };
+}
+

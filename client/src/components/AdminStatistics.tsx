@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Grid,
@@ -24,7 +24,7 @@ import {
 } from 'recharts';
 import { getStatistics, StatisticsResponse } from '../services/api';
 
-const AdminStatistics = () => {
+const AdminStatistics: React.FC = () => {
   const [stats, setStats] = useState<StatisticsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

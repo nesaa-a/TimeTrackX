@@ -2,13 +2,13 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
-import Sidebar from './sidebar';
+import Sidebar from './Sidebar';
 
 const Layout: React.FC = () => {
     return (
         <Box sx={{ display: 'flex', minHeight: '100vh' }}>
             <Navbar />
-            <Sidebar />
+            <Sidebar np={undefined} />
             <Box
                 component="main"
                 sx={{

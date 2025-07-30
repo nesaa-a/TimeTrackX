@@ -310,7 +310,13 @@ const Shifts: React.FC = () => {
         <DialogContent>
           <List>
             {users.map((user) => (
-              <ListItem key={user.id} dense button onClick={() => handleUserToggle(user.id)}>
+              <ListItem
+                key={user.id}
+                dense
+                component="button"
+                onClick={() => handleUserToggle(user.id)}
+                style={{ cursor: 'pointer' }}
+              >
                 <Checkbox
                   edge="start"
                   checked={selectedUsers.includes(user.id)}
