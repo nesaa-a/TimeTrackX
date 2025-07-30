@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DepartmentFilter, StatusFilter } from '../components/Filters';
-import { EmployeeForm, EmployeeTable } from '../components/Employee';
+import DepartmentFilter from '../components/Filters/DepartentFilter';
+import StatusFilter from '../components/Filters/StatusFilter';
+import EmployeeForm from '../components/Employee/EmployeeForm';
+import EmployeeTable from '../components/Employee/EmployeeTable';
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState([]);

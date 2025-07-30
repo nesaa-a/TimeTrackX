@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   // configure axios base URL
-  axios.defaults.baseURL = process.env.REACT_APP_API_URL || '';
+  axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
   useEffect(() => {
     if (token) {
@@ -25,11 +25,16 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const login = async (username, password) => {
-    const { data } = await axios.post('/login', { username, password });
-    localStorage.setItem('token', data.token);
-    setToken(data.token);
-    const userRes = await axios.get('/users/me');
-    setUser(userRes.data);
+    try {
+      const { data } = await axios.post('/login', { username, password });
+      localStorage.setItem('token', data.token);
+      setToken(data.token);
+      const userRes = await axios.get('/users/me');
+      setUser(userRes.data);
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
   const logout = () => {

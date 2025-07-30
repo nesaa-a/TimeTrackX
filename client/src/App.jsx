@@ -8,9 +8,16 @@ import UserDashboard from './pages/UserDashboard';
 import Unauthorized from './pages/Unauthorized';
 import { useAuth } from './contexts/AuthContext';
 import EmployeesPage from './pages/EmployeesPage';
+// Removed unused imports - these should be imported in the components that use them
 
 function ProtectedRoute({ role }) {
-  const { user } = useAuth();
+  const auth = useAuth();
+  const user = auth?.user;
+  
+  if (!auth) {
+    return <div>Loading...</div>;
+  }
+  
   if (!user) return <Navigate to="/login" replace />;
   if (role && user.roleName !== role) return <Navigate to="/unauthorized" replace />;
   return <Outlet />;
@@ -28,9 +35,8 @@ export default function App() {
         <Route path="/admin" element={<AdminDashboard />} />
       </Route>
       <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/employees" element={<EmployeesPage />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
-      <Route path="/employees" element={<EmployeesPage />} />
-      <Route path="/employees" element={<EmployeesPage />} />
     </Routes>
   );
 }

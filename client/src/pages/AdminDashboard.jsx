@@ -1,5 +1,6 @@
 import React from 'react';
-import { Sidebar, Navbar } from '../components/Layout'; 
+import Sidebar from '../components/Layout/Sidebar';
+import Navbar from '../components/Layout/Navbar'; 
 import { Card, Button } from 'flowbite-react';
 
 export default function AdminDashboard() {

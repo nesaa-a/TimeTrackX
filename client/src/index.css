@@ -3,4 +3,4 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "flowbite";
+/* Flowbite styles will be imported via JavaScript */

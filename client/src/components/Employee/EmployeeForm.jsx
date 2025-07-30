@@ -1,63 +1,71 @@
-// src/pages/EmployeesPage.jsx
+// src/components/Employee/EmployeeForm.jsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import DepartmentFilter from '../components/Filters/DepartmentFilter';
-import StatusFilter from '../components/Filters/StatusFilter';
-import EmployeeForm from '../components/Employee/EmployeeForm';
-import EmployeeTable from '../components/Employee/EmployeeTable';
 
-export default function EmployeesPage() {
-  const [employees, setEmployees] = useState([]);
-  const [filter, setFilter] = useState({ department: '', status: '' });
-  const [editing, setEditing] = useState(null);
-
-  const fetchEmployees = () => {
-    axios.get('/api/employees', { params: filter })
-      .then(res => setEmployees(res.data))
-      .catch(console.error);
-  };
+export default function EmployeeForm({ initialData, onSubmit }) {
+  const [form, setForm] = useState({
+    name: '',
+    department: '',
+    status: 'active',
+    ...initialData,
+  });
 
   useEffect(() => {
-    fetchEmployees();
-  }, [filter]);
+    if (initialData) {
+      setForm({
+        name: initialData.name || '',
+        department: initialData.department || '',
+        status: initialData.status || 'active',
+      });
+    }
+  }, [initialData]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(form);
+    setForm({ name: '', department: '', status: 'active' });
+  };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl mb-4">Menaxho Punonjësit</h1>
-      <div className="flex space-x-4 mb-6">
-        <DepartmentFilter
-          value={filter.department}
-          onChange={dept => setFilter(f => ({ ...f, department: dept }))}
+    <form onSubmit={handleSubmit} className="mt-6 bg-white p-4 rounded shadow-md">
+      <h2 className="text-xl mb-4">{initialData ? 'Ndrysho Punonjësin' : 'Punëso Punonjës'}</h2>
+      <div className="flex flex-col space-y-4">
+        <input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Emri"
+          className="border p-2 rounded"
+          required
         />
-        <StatusFilter
-          value={filter.status}
-          onChange={st => setFilter(f => ({ ...f, status: st }))}
+        <input
+          name="department"
+          value={form.department}
+          onChange={handleChange}
+          placeholder="Departamenti"
+          className="border p-2 rounded"
+          required
         />
+        <select
+          name="status"
+          value={form.status}
+          onChange={handleChange}
+          className="border p-2 rounded"
+        >
+          <option value="active">Aktiv</option>
+          <option value="inactive">Jo‑Aktiv</option>
+        </select>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          {initialData ? 'Ruaj Ndryshimet' : 'Shto Punonjës'}
+        </button>
       </div>
-      <EmployeeTable
-        data={employees}
-        onEdit={emp => setEditing(emp)}
-        onDelete={id => {
-          axios.delete(`/api/employees/${id}`)
-            .then(fetchEmployees)
-            .catch(console.error);
-        }}
-      />
-      <EmployeeForm
-        key={editing?.id || 'new'}
-        initialData={editing}
-        onSubmit={data => {
-          const request = editing
-            ? axios.put(`/api/employees/${editing.id}`, data)
-            : axios.post('/api/employees', data);
-          request
-            .then(() => {
-              setEditing(null);
-              fetchEmployees();
-            })
-            .catch(console.error);
-        }}
-      />
-    </div>
+    </form>
   );
 }
