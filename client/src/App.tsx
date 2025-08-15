@@ -22,77 +22,78 @@ import AdminStatistics from './components/AdminStatistics';
 import Shifts from './pages/Shifts';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-    const { isAuthenticated } = useAuth();
-    return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-    const { isAuthenticated } = useAuth();
-    return isAuthenticated ? <Navigate to="/dashboard" /> : <>{children}</>;
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <Navigate to="/dashboard" replace /> : <>{children}</>;
 };
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-    const { isAuthenticated, user } = useAuth();
-    return isAuthenticated && user?.role === 'Admin' ? <>{children}</> : <Navigate to="/dashboard" />;
+  const { isAuthenticated, user } = useAuth();
+  return isAuthenticated && user?.role === 'Admin'
+    ? <>{children}</>
+    : <Navigate to="/dashboard" replace />;
+};
+
+const AppRoutes = () => {
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <Routes>
+      {/* Root redirect */}
+      <Route
+        path="/"
+        element={<Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />}
+      />
+
+      {/* Public */}
+      <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+      <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+
+      {/* Protected Layout */}
+      <Route
+        path="/app"
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="projects" element={<Projects />} />
+        <Route path="tasks" element={<Tasks />} />
+        <Route path="time-tracking" element={<TimeTracking />} />
+        <Route path="shifts" element={<Shifts />} />
+        <Route path="users" element={<Users />} />
+        <Route path="admin/statistics" element={<AdminRoute><AdminStatistics /></AdminRoute>} />
+      </Route>
+
+      {/* Fallback */}
+      <Route path="/" element={<Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />} />
+    </Routes>
+  );
 };
 
 const App: React.FC = () => {
-    return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <AuthProvider>
-                    <LoadingProvider>
-                        <LoadingOverlay />
-                        <Router>
-                            <Routes>
-                                <Route
-                                    path="/login"
-                                    element={
-                                        <PublicRoute>
-                                            <Login />
-                                        </PublicRoute>
-                                    }
-                                />
-                                <Route
-                                    path="/register"
-                                    element={
-                                        <PublicRoute>
-                                            <Register />
-                                        </PublicRoute>
-                                    }
-                                />
-                                <Route
-                                    path="/"
-                                    element={
-                                        <ProtectedRoute>
-                                            <Layout />
-                                        </ProtectedRoute>
-                                    }
-                                >
-                                    <Route index element={<Navigate to="/dashboard" replace />} />
-                                    <Route path="dashboard" element={<Dashboard />} />
-                                    <Route path="projects" element={<Projects />} />
-                                    <Route path="tasks" element={<Tasks />} />
-                                    <Route path="time-tracking" element={<TimeTracking />} />
-                                    <Route path="shifts" element={<Shifts />} />
-                                    <Route path="users" element={<Users />} />
-                                    <Route
-                                        path="admin/statistics"
-                                        element={
-                                            <AdminRoute>
-                                                <AdminStatistics />
-                                            </AdminRoute>
-                                        }
-                                    />
-                                </Route>
-                            </Routes>
-                        </Router>
-                    </LoadingProvider>
-                </AuthProvider>
-            </LocalizationProvider>
-        </ThemeProvider>
-    );
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <AuthProvider>
+          <LoadingProvider>
+            <LoadingOverlay />
+            <Router>
+              <AppRoutes />
+            </Router>
+          </LoadingProvider>
+        </AuthProvider>
+      </LocalizationProvider>
+    </ThemeProvider>
+  );
 };
 
 export default App;
